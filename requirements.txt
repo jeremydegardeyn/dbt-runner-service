@@ -2,6 +2,9 @@ fastapi==0.115.6
 uvicorn[standard]==0.34.0
 pydantic==2.10.4
 
+# Cloud Run Admin API client -- used to trigger the dbt Cloud Run Job for heavy runs
+google-cloud-run~=0.10
+
 # dbt core + adapter. Swap the adapter for your warehouse:
 #   dbt-bigquery / dbt-snowflake / dbt-redshift / dbt-postgres / dbt-databricks
 dbt-core==1.9.1
