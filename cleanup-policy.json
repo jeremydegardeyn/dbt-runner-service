@@ -1,0 +1,17 @@
+[
+  {
+    "name": "keep-latest",
+    "action": { "type": "Keep" },
+    "condition": {
+      "tagState": "TAGGED",
+      "tagPrefixes": ["latest"]
+    }
+  },
+  {
+    "name": "delete-older-than-1yr",
+    "action": { "type": "Delete" },
+    "condition": {
+      "olderThan": "365d"
+    }
+  }
+]

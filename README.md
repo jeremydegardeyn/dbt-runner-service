@@ -35,6 +35,16 @@ REGION=us-central1
 gcloud artifacts repositories create dbt \
   --repository-format=docker --location=$REGION --project=$PROJECT
 
+# Cleanup policy: keep the `latest` tag, auto-delete anything older than 1 year.
+# Preview first with --dry-run (lists what *would* be deleted, deletes nothing):
+gcloud artifacts repositories set-cleanup-policies dbt \
+  --location=$REGION --project=$PROJECT \
+  --policy=cleanup-policy.json --dry-run
+# Then apply for real (drop --dry-run):
+gcloud artifacts repositories set-cleanup-policies dbt \
+  --location=$REGION --project=$PROJECT \
+  --policy=cleanup-policy.json
+
 # Service account dbt runs as (needs BigQuery access)
 gcloud iam service-accounts create dbt-runner --project=$PROJECT
 SA=dbt-runner@${PROJECT}.iam.gserviceaccount.com
