@@ -1,0 +1,25 @@
+# Builds & pushes the reusable base image to Artifact Registry.
+# Run from this repo: gcloud builds submit --config cloudbuild.yaml
+#
+# Wire to a Cloud Build trigger on push-to-main if you want it automatic.
+substitutions:
+  _REGION: us-central1
+  _AR_REPO: dbt           # Artifact Registry repo name
+  _IMAGE: dbt-runner-base
+
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - -t
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:latest
+      - -t
+      - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:$SHORT_SHA
+      - .
+
+images:
+  - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:latest
+  - ${_REGION}-docker.pkg.dev/$PROJECT_ID/${_AR_REPO}/${_IMAGE}:$SHORT_SHA
+
+options:
+  logging: CLOUD_LOGGING_ONLY
